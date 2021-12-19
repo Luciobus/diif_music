@@ -14,7 +14,7 @@ print(sys.getdefaultencoding())
 
 
 def yt_search(text):
-    html = urllib.request.urlopen("https://www.youtube.com/results?search_query=" + urllib.parse.quote(text))
+    html = urllib.request.urlopen("https://www.youtube.com/results?search_query=" + urllib.parse.quote(text + " music"))
     video_id = re.findall(r"watch\?v=(\S{11})", html.read().decode())[0]
     # print(video_id)
     return "https://www.youtube.com/watch?v=" + video_id
