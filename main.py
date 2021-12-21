@@ -37,6 +37,8 @@ def spotify_search(text):
     while True:
         try:
             return spotify.search(q=text, type='track')['tracks']['items'][0]['external_urls']['spotify'] + "\n"
+        except IndexError:
+            return ""
         except requests.exceptions.ConnectionError:
             time.sleep(0.01)
             continue
@@ -54,10 +56,8 @@ def send_welcome(message):
 @bot.message_handler(func=lambda m: True)
 def get_links(message):
     search_text = message.text
-    print(search_text)
     link = "The most relevant results/Наиболее подходящие результаты:\n" + yt_search(search_text) + spotify_search(
         search_text)
-    print(link)
     bot.reply_to(message, link)
     # bot.reply_to(message, message.text)
 
