@@ -21,10 +21,11 @@ print(sys.getdefaultencoding())
 def yt_search(text):
     while True:
         try:
-            html = urllib.request.urlopen(
-                "https://www.youtube.com/results?search_query=" + urllib.parse.quote(text + " music"))
-            video_id = re.findall(r"watch\?v=(\S{11})", html.read().decode())[0]
-            return "https://www.youtube.com/watch?v=" + video_id + "\n"
+            with urllib.request.urlopen(
+                    "https://www.youtube.com/results?search_query=" + urllib.parse.quote(
+                            text + " music")) as html:
+                video_id = re.findall(r"watch\?v=(\S{11})", html.read().decode())[0]
+                return "https://www.youtube.com/watch?v=" + video_id + "\n"
         except requests.exceptions.ConnectionError:
             time.sleep(0.01)
             continue
@@ -36,7 +37,8 @@ def yt_search(text):
 def spotify_search(text):
     while True:
         try:
-            return spotify.search(q=text, type='track')['tracks']['items'][0]['external_urls']['spotify'] + "\n"
+            return spotify.search(q=text, type='track')['tracks']['items'][0]['external_urls'][
+                       'spotify'] + "\n"
         except IndexError:
             return ""
         except requests.exceptions.ConnectionError:
@@ -50,14 +52,15 @@ def spotify_search(text):
 @bot.message_handler(commands=['start', 'help'])
 def send_welcome(message):
     bot.reply_to(message,
-                 "Hello this is music search bot. Type your query and get links\n Привет, это бот поиска музыки. Напиши запрос и я выдам тебе ссылки")
+                 "Hello this is music search bot. Type your query and get links\n"
+                 "Привет, это бот поиска музыки. Напиши запрос и я выдам тебе ссылки")
 
 
 @bot.message_handler(func=lambda m: True)
 def get_links(message):
     search_text = message.text
-    link = "The most relevant results/Наиболее подходящие результаты:\n" + yt_search(search_text) + spotify_search(
-        search_text)
+    link = "The most relevant results/Наиболее подходящие результаты:\n" + yt_search(
+        search_text) + spotify_search(search_text)
     bot.reply_to(message, link)
     # bot.reply_to(message, message.text)
 
