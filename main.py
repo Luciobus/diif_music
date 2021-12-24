@@ -49,11 +49,16 @@ def spotify_search(text):
             raise
 
 
-@bot.message_handler(commands=['start', 'help'])
+@bot.message_handler(commands=['start'])
 def send_welcome(message):
     bot.reply_to(message,
                  "Hello this is music search bot. Type your query and get links\n"
                  "Привет, это бот поиска музыки. Напиши запрос и я выдам тебе ссылки")
+
+
+@bot.message_handler(commands=['help'])
+def send_help(message):
+    bot.reply_to(message, "Just type name of track\nВведите название песни")
 
 
 @bot.message_handler(func=lambda m: True)
