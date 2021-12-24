@@ -6,10 +6,6 @@ on:
   create:
     tags:
       - v*
-  workflow_run:
-    workflows: [ "CI checker" ]
-    types:
-      - completed
 
 jobs:
   push_to_registry:
@@ -22,7 +18,7 @@ jobs:
       - name: Wait for build to succeed
         uses: lewagon/wait-on-check-action@v1.0.0
         with:
-          ref: main
+          ref: master
           check-name: build
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           wait-interval: 10
@@ -30,7 +26,7 @@ jobs:
       - name: Wait for linter to succeed
         uses: lewagon/wait-on-check-action@v1.0.0
         with:
-          ref: main
+          ref: master
           check-name: lint
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           wait-interval: 10
