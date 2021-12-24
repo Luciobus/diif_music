@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  music_app:
+    image: luciobus/music_app
+    labels:
+      - "com.centurylinklabs.watchtower.scope=myscope"
+    environment:
+      TOKEN: ${TOKEN}
+      SPOTIPY_CLIENT_ID: ${SPOTIPY_CLIENT_ID}
+      SPOTIPY_CLIENT_SECRET: ${SPOTIPY_CLIENT_SECRET}
+
+  watchtower:
+    image: containrrr/watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --interval 10 --scope myscope
+    labels:
+      - "com.centurylinklabs.watchtower.scope=myscope"
